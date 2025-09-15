@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Miraj Cinema — Booking Form</title>
+
+  <!-- A friendly handwriting-like font to match your sketch -->
+  <link href="https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --paper-bg: #fbfbf8;
+      --accent: #5b3e8a;
+      --muted: #666;
+      --line: rgba(0,0,0,0.06);
+      --card-border: #c8c4c1;
+      --shadow: 0 6px 18px rgba(0,0,0,0.08);
+      --green: #0aa66a;
+    }
+
+    /* Page */
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Patrick Hand", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #f6f7f8 0%, #fbfbfb 100%);
+      color:#222;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      padding:24px;
+    }
+
+    /* Centering container */
+    .wrap{
+      max-width:760px;
+      margin:18px auto;
+      background: var(--paper-bg);
+      border:2px solid var(--card-border);
+      border-radius:6px;
+      box-shadow: var(--shadow);
+      position:relative;
+      overflow:hidden;
+    }
+
+    /* top "date" small area like notebook */
+    .topbar{
+      display:flex;
+      justify-content:flex-end;
+      padding:10px 14px;
+      gap:8px;
+      font-size:13px;
+      color:var(--muted);
+    }
+    .date-box{
+      border:1px solid var(--line);
+      padding:4px 8px;
+      border-radius:3px;
+      background:transparent;
+      font-family:inherit;
+    }
+
+    /* left margin line like a notebook */
+    .wrap::before{
+      content:"";
+      position:absolute;
+      top:0;
+      left:62px;
+      bottom:0;
+      width:2px;
+      background:linear-gradient(to bottom, transparent 0% , var(--line) 50%, transparent 51%);
+      opacity:0.5;
+      pointer-events:none;
+    }
+
+    form{
+      padding:10px 36px 36px 64px;
+      box-sizing:border-box;
+      display:grid;
+      gap:14px;
+    }
+
+    /* title */
+    .title{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      border-bottom:2px solid var(--line);
+      padding-bottom:8px;
+      margin-bottom:6px;
+    }
+    .title h1{
+      font-size:28px;
+      letter-spacing:3px;
+      margin:0;
+      color:var(--accent);
+    }
+    .clapper{
+      width:44px;
+      height:36px;
+      display:inline-block;
+      transform:rotate(-6deg);
+      opacity:0.95;
+    }
+
+    /* form rows */
+    .row{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    label{
+      font-size:16px;
+      letter-spacing:0.6px;
+      color:#222;
+    }
+    input[type="text"],
+    input[type="tel"],
+    input[type="date"],
+    input[type="number"],
+    select,
+    textarea{
+      border:1.5px solid var(--card-border);
+      padding:10px 12px;
+      border-radius:6px;
+      font-size:15px;
+      outline:none;
+      background:transparent;
+      width:100%;
+      box-sizing:border-box;
+    }
+    input:focus, select:focus, textarea:focus{
+      border-color:var(--accent);
+      box-shadow:0 4px 10px rgba(91,62,138,0.06);
+    }
+
+    /* show-time / checkboxes area */
+    .inline-group{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .inline-item{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:transparent;
+      padding:6px 8px;
+      border-radius:6px;
+    }
+    .inline-item input[type="checkbox"],
+    .inline-item input[type="radio"]{
+      width:18px;
+      height:18px;
+      accent-color:var(--accent);
+    }
+
+    /* seat preference block */
+    .preference{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    /* payment block */
+    .payment{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+
+    /* small helper text */
+    .muted{
+      color:var(--muted);
+      font-size:13px;
+    }
+
+    /* submit */
+    .actions{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:6px;
+    }
+    .btn{
+      display:inline-block;
+      background:var(--accent);
+      border:none;
+      color:white;
+      padding:10px 16px;
+      border-radius:8px;
+      font-size:16px;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(91,62,138,0.12);
+    }
+    .btn.secondary{
+      background:transparent;
+      color:var(--accent);
+      border:1.5px solid var(--accent);
+      box-shadow:none;
+    }
+
+    /* footer thank you */
+    .thank{
+      text-align:center;
+      font-size:18px;
+      color:var(--muted);
+      padding-top:12px;
+      padding-bottom:18px;
+      letter-spacing:1px;
+    }
+
+    /* make responsive */
+    @media (max-width:520px){
+      .wrap::before{ left:48px; }
+      form{ padding-left:50px; padding-right:18px; }
+      .title h1{ font-size:22px; }
+    }
+
+  </style>
+</head>
+<body>
+  <div class="wrap" role="main" aria-labelledby="pageTitle">
+    <div class="topbar">
+      <div class="muted">Date</div>
+      <div class="date-box" id="today"></div>
+    </div>
+
+    <form id="bookingForm" autocomplete="off" onsubmit="handleSubmit(event)">
+      <div class="title">
+        <h1 id="pageTitle">MIRAJ CINEMA</h1>
+
+        <!-- small clapperboard SVG -->
+        <svg class="clapper" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="6" y="20" width="52" height="34" rx="3" fill="#f6f6f6" stroke="#000" stroke-width="1"/>
+          <rect x="10" y="24" width="44" height="6" fill="#222"/>
+          <g fill="#fff">
+            <rect x="12" y="26" width="6" height="2"/>
+            <rect x="20" y="26" width="6" height="2"/>
+            <rect x="28" y="26" width="6" height="2"/>
+            <rect x="36" y="26" width="6" height="2"/>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Name -->
+      <div class="row">
+        <label for="name">Name of Customer</label>
+        <input id="name" name="name" type="text" placeholder="Full name" required />
+      </div>
+
+      <!-- Contact -->
+      <div class="row">
+        <label for="contact">Contact Number</label>
+        <input id="contact" name="contact" type="tel" placeholder="e.g. +91 98765 43210" pattern="[\d\s+-]+" required />
+      </div>
+
+      <!-- movie name -->
+      <div class="row">
+        <label for="movie">Movie Name</label>
+        <input id="movie" name="movie" type="text" placeholder="Movie title" required />
+      </div>
+
+      <!-- date and show time -->
+      <div class="row">
+        <label for="date">Date of Show</label>
+        <input id="date" name="date" type="date" required />
+      </div>
+
+      <div class="row">
+        <label>Show Time</label>
+        <div class="inline-group" role="group" aria-label="Show time">
+          <label class="inline-item">
+            <input type="checkbox" name="showtime" value="10:00 AM - 1:00 PM" />
+            <span>10:00 AM to 1:00 PM</span>
+          </label>
+          <label class="inline-item">
+            <input type="checkbox" name="showtime" value="4:00 PM - 7:00 PM" />
+            <span>4:00 PM to 7:00 PM</span>
+          </label>
+          <label class="inline-item">
+            <input type="checkbox" name="showtime" value="7:00 PM - 10:00 PM" />
+            <span>7:00 PM to 10:00 PM</span>
+          </label>
+        </div>
+        <div class="muted">Tip: select any show(s) you want.</div>
+      </div>
+
+      <!-- seat/ticket number -->
+      <div class="row" style="grid-template-columns:1fr 1fr;">
+        <label for="seat">Seat Number</label>
+        <input id="seat" name="seat" type="text" placeholder="e.g. A5" />
+      </div>
+
+      <div class="row">
+        <label for="ticket">Ticket Number</label>
+        <input id="ticket" name="ticket" type="text" placeholder="Auto or manual" />
+      </div>
+
+      <!-- seat preference -->
+      <div class="row">
+        <label>Seat Preference</label>
+        <div class="preference" role="radiogroup" aria-label="Seat preference">
+          <label class="inline-item">
+            <input type="radio" name="preference" value="Normal" required />
+            <span>Normal</span>
+          </label>
+          <label class="inline-item">
+            <input type="radio" name="preference" value="Gold" />
+            <span>Gold</span>
+          </label>
+          <label class="inline-item">
+            <input type="radio" name="preference" value="Silver" />
+            <span>Silver</span>
+          </label>
+          <label class="inline-item">
+            <input type="radio" name="preference" value="Platinum" />
+            <span>Platinum</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- payment mode -->
+      <div class="row">
+        <label>Payment Mode</label>
+        <div class="payment" role="radiogroup" aria-label="Payment mode">
+          <label class="inline-item">
+            <input type="radio" name="payment" value="Cash" required />
+            <span>Cash</span>
+          </label>
+          <label class="inline-item">
+            <input type="radio" name="payment" value="UPI" />
+            <span>UPI</span>
+          </label>
+          <label class="inline-item">
+            <input type="radio" name="payment" value="Card" />
+            <span>Card</span>
+          </label>
+          <label class="inline-item">
+            <input type="radio" name="payment" value="Net Banking" />
+            <span>Net Banking</span>
+          </label>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="btn">Book Ticket</button>
+        <button type="button" class="btn secondary" onclick="document.getElementById('bookingForm').reset()">Reset</button>
+      </div>
+
+      <div class="thank">THANK YOU!</div>
+    </form>
+  </div>
+
+  <script>
+    // show today's date in the small top box
+    (function(){
+      const d = new Date();
+      const opts = { year: 'numeric', month: 'short', day: 'numeric' };
+      document.getElementById('today').textContent = d.toLocaleDateString(undefined, opts);
+      // set default date input to today
+      const dateInput = document.getElementById('date');
+      const iso = d.toISOString().slice(0,10);
+      dateInput.value = iso;
+    })();
+
+    // handle form submit — generate a simple confirmation dialog with the entered info
+    function handleSubmit(e){
+      e.preventDefault();
+      const f = e.target;
+      const data = new FormData(f);
+
+      // collect multiple checked showtimes
+      const showtimes = [];
+      for (const val of data.getAll('showtime')) showtimes.push(val);
+
+      const summary = {
+        Name: data.get('name') || '-',
+        Contact: data.get('contact') || '-',
+        Movie: data.get('movie') || '-',
+        Date: data.get('date') || '-',
+        'Show time(s)': showtimes.length ? showtimes.join('; ') : '-',
+        'Seat no.': data.get('seat') || '-',
+        'Ticket no.': data.get('ticket') || '-',
+        'Seat pref.': data.get('preference') || '-',
+        'Payment': data.get('payment') || '-'
+      };
+
+      // Build a nice message
+      let message = "Confirm booking details:\\n\\n";
+      for (const k in summary){
+        message += k + ": " + summary[k] + "\\n";
+      }
+      message += "\\nPress OK to confirm, Cancel to edit.";
+      if (confirm(message)){
+        // In a real app you'd send this to the server. For demo, we'll show an alert and reset.
+        alert("Booking confirmed!\\nThank you, " + (summary.Name || "customer") + ".");
+        f.reset();
+        // reset date to today
+        const iso = new Date().toISOString().slice(0,10);
+        document.getElementById('date').value = iso;
+      }
+    }
+  </script>
+</body>
+</html>
